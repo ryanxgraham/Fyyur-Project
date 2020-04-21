@@ -1,3 +1,5 @@
+"""CODE FOR FORMS."""
+
 from datetime import datetime
 from flask_wtf import Form
 from wtforms import StringField, SelectField, SelectMultipleField, DateTimeField, BooleanField, ValidationError
@@ -79,7 +81,10 @@ genre_choices = [
     ('Other', 'Other'),
 ]
 
+
 class ShowForm(Form):
+    """Class for create/edit Show form."""
+
     artist_id = StringField(
         'artist_id'
     )
@@ -89,15 +94,20 @@ class ShowForm(Form):
     start_time = DateTimeField(
         'start_time',
         validators=[DataRequired()],
-        default= datetime.today()
+        default=datetime.today()
     )
 
+
 class VenueForm(Form):
+    """Class for create/edit Venue form."""
+
     def validate_phone(form, field):
+        """Validate phone numbers."""
         if not re.search(r"^[0-9]{3}-[0-9]{3}-[0-9]{4}$", field.data):
             raise ValidationError("Invalid phone number.")
 
     def validate_genres(form, field):
+        """Validate genre selection."""
         genres_values = [choice[1] for choice in genre_choices]
         for value in field.data:
             if value not in genres_values:
@@ -137,12 +147,17 @@ class VenueForm(Form):
     website = StringField(
         'website', validators=[URL(), Length(max=120)])
 
+
 class ArtistForm(Form):
+    """Class for create/edit Artist form."""
+
     def validate_phone(form, field):
+        """Validate phone number."""
         if not re.search(r"^[0-9]{3}-[0-9]{3}-[0-9]{4}$", field.data):
             raise ValidationError("Invalid phone number.")
 
     def validate_genres(form, field):
+        """Validate genre selection."""
         genres_values = [choice[1] for choice in genre_choices]
         for value in field.data:
             if value not in genres_values:
@@ -169,5 +184,3 @@ class ArtistForm(Form):
         'image_link', validators=[URL(), Length(max=500)])
     website = StringField(
         'website', validators=[URL(), Length(max=120)])
-
-# TODO IMPLEMENT NEW ARTIST FORM AND NEW SHOW FORM

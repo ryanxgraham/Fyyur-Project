@@ -1,3 +1,4 @@
+"""CONFIG INFO FOR FYYURRDB."""
 import os
 SECRET_KEY = os.urandom(32)
 # Grabs the folder where the script runs.
@@ -8,6 +9,4 @@ DEBUG = True
 
 # Connect to the database
 
-
-# TODO IMPLEMENT DATABASE URL
 SQLALCHEMY_DATABASE_URI = 'postgres://postgres@localhost:5432/fyyurdb'
