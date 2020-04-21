@@ -84,18 +84,13 @@ def venues():
 
 @app.route('/venues/search', methods=['POST'])
 def search_venues():
-  # TODO: implement search on artists with partial string search. Ensure it is case-insensitive.
-  # seach for Hop should return "The Musical Hop".
-  # search for "Music" should return "The Musical Hop" and "Park Square Live Music & Coffee"
-  response={
-    "count": 1,
-    "data": [{
-      "id": 2,
-      "name": "The Dueling Pianos Bar",
-      "num_upcoming_shows": 0,
-    }]
-  }
-  return render_template('pages/search_venues.html', results=response, search_term=request.form.get('search_term', ''))
+    venue_query = Venue.query.filter(Venue.name.ilike('%' + request.form['search_term'] + '%'))
+    venue_list = list(map(Venue.short, venue_query))
+    response = {
+        "count":len(venue_list),
+        "data": venue_list
+        }
+    return render_template('pages/search_venues.html', results=response, search_term=request.form.get('search_term', ''))
 
 @app.route('/venues/<int:venue_id>')
 def show_venue(venue_id):
@@ -164,18 +159,13 @@ def artists():
 
 @app.route('/artists/search', methods=['POST'])
 def search_artists():
-  # TODO: implement search on artists with partial string search. Ensure it is case-insensitive.
-  # seach for "A" should return "Guns N Petals", "Matt Quevado", and "The Wild Sax Band".
-  # search for "band" should return "The Wild Sax Band".
-  response={
-    "count": 1,
-    "data": [{
-      "id": 4,
-      "name": "Guns N Petals",
-      "num_upcoming_shows": 0,
-    }]
-  }
-  return render_template('pages/search_artists.html', results=response, search_term=request.form.get('search_term', ''))
+    artist_query = Artist.query.filter(Artist.name.ilike('%' + request.form['search_term'] + '%'))
+    artist_list = list(map(Artist.short, artist_query))
+    response = {
+        "count":len(artist_list),
+        "data": artist_list
+    }
+    return render_template('pages/search_artists.html', results=response, search_term=request.form.get('search_term', ''))
 
 @app.route('/artists/<int:artist_id>')
 def show_artist(artist_id):
@@ -215,10 +205,24 @@ def edit_artist(artist_id):
 
 @app.route('/artists/<int:artist_id>/edit', methods=['POST'])
 def edit_artist_submission(artist_id):
-  # TODO: take values from the form submitted, and update existing
-  # artist record with ID <artist_id> using the new attributes
-
-  return redirect(url_for('show_artist', artist_id=artist_id))
+    form = ArtistForm(request.form)
+    artist_data = Artist.query.get(artist_id)
+    seeking_venue = False
+    seeking_description = ''
+    if 'seeking_venue' not in request.form:
+        seeking_venue == False
+    setattr(artist_data, 'name', request.form['name'])
+    setattr(artist_data, 'genres', request.form.getlist('genres'))
+    setattr(artist_data, 'city', request.form['city'])
+    setattr(artist_data, 'state', request.form['state'])
+    setattr(artist_data, 'phone', request.form['phone'])
+    setattr(artist_data, 'website', request.form['website'])
+    setattr(artist_data, 'facebook_link', request.form['facebook_link'])
+    setattr(artist_data, 'image_link', request.form['image_link'])
+    setattr(artist_data, 'seeking_description', seeking_description)
+    setattr(artist_data, 'seeking_venue', seeking_venue)
+    Artist.update(artist_data)
+    return redirect(url_for('show_artist', artist_id=artist_id))
 
 @app.route('/venues/<int:venue_id>/edit', methods=['GET'])
 def edit_venue(venue_id):

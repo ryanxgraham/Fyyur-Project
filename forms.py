@@ -98,8 +98,9 @@ class VenueForm(Form):
             raise ValidationError("Invalid phone number.")
 
     def validate_genres(form, field):
+        genres_values = [choice[1] for choice in genre_choices]
         for value in field.data:
-            if value not in genres_choices:
+            if value not in genres_values:
                 raise ValidationError('Invalid genres value.')
 
     name = StringField(
@@ -142,8 +143,9 @@ class ArtistForm(Form):
             raise ValidationError("Invalid phone number.")
 
     def validate_genres(form, field):
+        genres_values = [choice[1] for choice in genre_choices]
         for value in field.data:
-            if value not in genres_choices:
+            if value not in genres_values:
                 raise ValidationError('Invalid genres value.')
 
     name = StringField(
