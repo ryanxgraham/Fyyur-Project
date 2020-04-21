@@ -101,7 +101,7 @@
       {% endwith %}
 
       {% block content %}{% endblock %}
-      
+
     </main>
 
   </div>
@@ -117,6 +117,15 @@
   <script>window.jQuery || document.write('<script type="text/javascript" src="/static/js/libs/jquery-1.11.1.min.js"><\/script>')</script>
   <script type="text/javascript" src="/static/js/libs/bootstrap-3.1.1.min.js" defer></script>
   <script type="text/javascript" src="/static/js/plugins.js" defer></script>
-
+  <script type="text/javascript">
+      function toggleVisibility() {
+      const checkbox = document.getElementsByClassName('form-check-input');
+      const desc = document.getElementById('desc');
+      if (checkbox.checked == true) {
+          desc.display = 'block';
+      } else {desc.dispay = 'none';}
+  }
+  toggleVisibility()
+  </script> 
 </body>
 </html>

@@ -15,33 +15,31 @@ def db_setup(app):
 #----------------------------------------------------------------------------#
 # Models.
 #----------------------------------------------------------------------------#
-
 class Venue(db.Model):
     __tablename__ = 'Venue'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String)
+    name = db.Column(db.String())
     city = db.Column(db.String(120))
     state = db.Column(db.String(120))
     address = db.Column(db.String(120))
     phone = db.Column(db.String(120))
-    genres = db.Column(ARRAY(String))
-    description = db.Column(db.String(500), default='')
+    genres = db.Column(ARRAY(db.String))
+    seeking_description = db.Column(db.String(500), default='')
     seeking_talent = db.Column(db.String(10))
     facebook_link = db.Column(db.String(120))
     image_link = db.Column(db.String(500))
     website = db.Column(String(120))
     shows = db.relationship('Show', backref='Venue', lazy='dynamic')
 
-    def __init__(self, name, genres, address, city, state, phone, website, facebook_link, image_link,
-                 seeking_talent=False, description=""):
+    def __init__(self, name, genres, address, city, state, phone, website, facebook_link, image_link, seeking_talent=False, seeking_description=" "):
         self.name = name
         self.genres = genres
         self.city = city
         self.state = state
         self.address = address
         self.phone = phone
-        self.description = description
+        self.seeking_description = seeking_description
         self.image_link = image_link
         self.facebook_link = facebook_link
         self.website = website
@@ -73,19 +71,20 @@ class Venue(db.Model):
             'state' :self.state,
         }
 
-    def detail(self):
+    def details(self):
         return{
             'id' :self.id,
             'name' :self.name,
             'genres' : self.genres,
             'address' :self.address,
             'city' :self.city,
+            'state':self.state,
             'phone' :self.phone,
             'website' :self.website,
             'facebook_link':self.facebook_link,
             'seeking_talent' :self.seeking_talent,
-            'description' :self.description,
-            'image-link' :self.image_link
+            'seeking_description':self.seeking_description,
+            'image_link' :self.image_link
         }
 
 
@@ -98,7 +97,7 @@ class Artist(db.Model):
     city = db.Column(db.String(120))
     state = db.Column(db.String(120))
     phone = db.Column(db.String(120))
-    genres = db.Column(db.String(120))
+    genres = db.Column(ARRAY(db.String))
     seeking_venue = db.Column(db.Boolean, default=False)
     seeking_description = db.Column(db.String(120), default=' ')
     facebook_link = db.Column(db.String(120))

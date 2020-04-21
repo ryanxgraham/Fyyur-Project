@@ -44,3 +44,6 @@ body {
 .form-only-page .back-home {
   margin-top: 10px;
 }
+.hidden {
+  display: none;
+}

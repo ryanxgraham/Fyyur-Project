@@ -98,9 +98,8 @@ class VenueForm(Form):
             raise ValidationError("Invalid phone number.")
 
     def validate_genres(form, field):
-        genres_values = [choice[1] for choice in genres_choices]
         for value in field.data:
-            if value not in genres_values:
+            if value not in genres_choices:
                 raise ValidationError('Invalid genres value.')
 
     name = StringField(
@@ -136,15 +135,15 @@ class VenueForm(Form):
         'image_link', validators=[URL(), Length(max=500)])
     website = StringField(
         'website', validators=[URL(), Length(max=120)])
+
 class ArtistForm(Form):
     def validate_phone(form, field):
         if not re.search(r"^[0-9]{3}-[0-9]{3}-[0-9]{4}$", field.data):
             raise ValidationError("Invalid phone number.")
 
     def validate_genres(form, field):
-        genres_values = [choice[1] for choice in genres_choices]
         for value in field.data:
-            if value not in genres_values:
+            if value not in genres_choices:
                 raise ValidationError('Invalid genres value.')
 
     name = StringField(
