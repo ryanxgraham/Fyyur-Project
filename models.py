@@ -106,8 +106,7 @@ class Artist(db.Model):
     website = db.Column(db.String(120))
     shows = db.relationship('Show', backref='Artist', lazy=True)
 
-    def __init__(self, name, genres, city, state, phone, image_link, website, facebook_link,
-                 seeking_venue=False, seeking_description=""):
+    def __init__(self, name, genres, city, state, phone, image_link, website, facebook_link, seeking_venue=False, seeking_description=""):
         self.name = name
         self.genres = genres
         self.city = city
@@ -176,7 +175,7 @@ class Show(db.Model):
 
     def artist_details(self):
         return{
-            'artist_id' :self.venue_id,
+            'artist_id' :self.artist_id,
             'artist_name' :self.Artist.name,
             'artist_image_link' :self.Artist.image_link,
             'start_time' :self.start_time
